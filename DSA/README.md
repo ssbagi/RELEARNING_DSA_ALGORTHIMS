@@ -4,6 +4,8 @@ In general for relearning coming from VLSI and working in the Virtual Prototype 
 
 Reading a large amount of codes or learning from basics from given codes and deriving things.
 
+> **⚠️ NOTE: This is LEVEL 1 ONLY** - Beginner/Foundational DSA concepts. Not comprehensive, not advanced. Just the basics needed to understand HW-SW interaction and code readability for SystemC/VLSI work. Keep it simple and practical.
+
 # Application
 
 Building Own Abstract Data Type which can be used in the communication of Producer to COnsumer or Use the In built ones like SystemC provided ones like TLM ports concept and stuff.
