@@ -55,11 +55,11 @@ private:
         const std::time_t current_time = std::chrono::system_clock::to_time_t(now);
         std::tm local_time{};
 
-#ifdef _WIN32
+    #ifdef _WIN32
         localtime_s(&local_time, &current_time);
-#else
+    #else
         localtime_r(&current_time, &local_time);
-#endif
+    #endif
 
         log_stream_ << std::put_time(&local_time, "%Y-%m-%d %H:%M:%S")
                     << " [" << level << "] " << message << '\n';
