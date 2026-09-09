@@ -1,0 +1,22 @@
+# C/C++ build artifacts
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+
+# Runtime logs
+*.log
+
+# Linked List generated targets
+/DSA/Linked List/linked_list
+/DSA/Linked List/linked_list_debug
+/DSA/Linked List/linked_list_asan
+/DSA/Linked List/linked_list_perf
+/DSA/Linked List/linked_list.exe
+/DSA/Linked List/linked_list_debug.exe
+/DSA/Linked List/linked_list_asan.exe
+/DSA/Linked List/linked_list_perf.exe
+/DSA/Linked List/linked_list.log
