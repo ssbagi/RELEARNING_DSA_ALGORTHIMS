@@ -1,0 +1,16 @@
+2026-09-09 06:26:36 [INFO] Linked-list program started
+2026-09-09 06:26:36 [INFO] Created head node with data=100
+2026-09-09 06:26:36 [INFO] Inserted node with data=101
+2026-09-09 06:26:36 [INFO] Inserted node with data=102
+2026-09-09 06:26:36 [INFO] Inserted node with data=103
+2026-09-09 06:26:36 [INFO] Inserted node with data=104
+2026-09-09 06:26:36 [INFO] Inserted node with data=105
+2026-09-09 06:26:36 [INFO] Inserted node with data=106
+2026-09-09 06:26:36 [INFO] Inserted node with data=107
+2026-09-09 06:26:36 [INFO] Inserted node with data=108
+2026-09-09 06:26:36 [INFO] Inserted node with data=109
+2026-09-09 06:26:36 [INFO] Inserted node with data=110
+2026-09-09 06:26:36 [INFO] Search 105 result=found
+2026-09-09 06:26:36 [INFO] Search 999 result=not found
+2026-09-09 06:26:36 [INFO] Deleted nodes with data=103 and data=108
+2026-09-09 06:26:36 [INFO] Linked-list program completed successfully
