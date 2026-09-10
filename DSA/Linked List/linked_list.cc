@@ -42,11 +42,12 @@ void insert_node(Node* head, int data) {
 // scan of at most n nodes to relink the matching node.
 // Auxiliary space: O(1).
 Node* delete_node(Node* head, int data) {
+    //Traverse and check whether the given data exists in the Node or not.
     if (!search_node(head, data)) {
         return head;
     }
 
-    // Lastest Node : head
+    // head : First Node
     if (head->data == data) {
         Node* new_head = head->next;
         delete head;
