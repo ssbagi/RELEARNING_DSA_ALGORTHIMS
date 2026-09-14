@@ -1,0 +1,34 @@
+2026-09-14 06:51:26 [INFO] Circular queue program started
+2026-09-14 06:51:26 [INFO] Initial queue state
+2026-09-14 06:51:26 [INFO] Circular Queue: nullptr
+2026-09-14 06:51:26 [INFO] Inserted node with data=100
+2026-09-14 06:51:26 [INFO] Inserted node with data=101
+2026-09-14 06:51:26 [INFO] Inserted node with data=102
+2026-09-14 06:51:26 [INFO] Inserted node with data=103
+2026-09-14 06:51:26 [INFO] Inserted node with data=104
+2026-09-14 06:51:26 [INFO] Inserted node with data=105
+2026-09-14 06:51:26 [INFO] Inserted node with data=106
+2026-09-14 06:51:26 [INFO] Inserted node with data=107
+2026-09-14 06:51:26 [INFO] Inserted node with data=108
+2026-09-14 06:51:26 [INFO] Inserted node with data=109
+2026-09-14 06:51:26 [INFO] Inserted node with data=110
+2026-09-14 06:51:26 [INFO] After inserting 11 nodes
+2026-09-14 06:51:26 [INFO] Circular Queue: 100 -> 101 -> 102 -> 103 -> 104 -> 105 -> 106 -> 107 -> 108 -> 109 -> 110 -> (back to 100)
+2026-09-14 06:51:26 [INFO] Search 105 result=found
+2026-09-14 06:51:26 [INFO] Search 999 result=not found
+2026-09-14 06:51:26 [INFO] After deleting head node 100
+2026-09-14 06:51:26 [INFO] Circular Queue: 101 -> 102 -> 103 -> 104 -> 105 -> 106 -> 107 -> 108 -> 109 -> 110 -> (back to 101)
+2026-09-14 06:51:26 [INFO] After deleting middle node 105
+2026-09-14 06:51:26 [INFO] Circular Queue: 101 -> 102 -> 103 -> 104 -> 106 -> 107 -> 108 -> 109 -> 110 -> (back to 101)
+2026-09-14 06:51:26 [INFO] After deleting tail node 110
+2026-09-14 06:51:26 [INFO] Circular Queue: 101 -> 102 -> 103 -> 104 -> 106 -> 107 -> 108 -> 109 -> (back to 101)
+2026-09-14 06:51:26 [INFO] After trying to delete missing node 999
+2026-09-14 06:51:26 [INFO] Circular Queue: 101 -> 102 -> 103 -> 104 -> 106 -> 107 -> 108 -> 109 -> (back to 101)
+2026-09-14 06:51:26 [INFO] Deleted test nodes with data=100, 105, and 110
+2026-09-14 06:51:26 [INFO] Down to two nodes
+2026-09-14 06:51:26 [INFO] Circular Queue: 108 -> 109 -> (back to 108)
+2026-09-14 06:51:26 [INFO] Down to a single self-linked node
+2026-09-14 06:51:26 [INFO] Circular Queue: 109 -> (back to 109)
+2026-09-14 06:51:26 [INFO] After cleanup
+2026-09-14 06:51:26 [INFO] Circular Queue: nullptr
+2026-09-14 06:51:26 [INFO] Circular queue program completed successfully

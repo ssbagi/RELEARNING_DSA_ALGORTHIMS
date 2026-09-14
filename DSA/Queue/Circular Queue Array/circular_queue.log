@@ -1,0 +1,17 @@
+2026-09-11 04:35:38 [INFO] Circular queue array program started
+2026-09-11 04:35:38 [INFO] Initial queue state
+2026-09-11 04:35:38 [INFO] Circular Queue: empty
+2026-09-11 04:35:38 [INFO] Enqueue value=10 result=success
+2026-09-11 04:35:38 [INFO] Enqueue value=20 result=success
+2026-09-11 04:35:38 [INFO] Enqueue value=30 result=success
+2026-09-11 04:35:38 [INFO] Enqueue value=40 result=success
+2026-09-11 04:35:38 [INFO] After inserting 4 elements
+2026-09-11 04:35:38 [INFO] Circular Queue: 10 -> 20 -> 30 -> 40
+2026-09-11 04:35:38 [INFO] Front=10 Rear=40
+2026-09-11 04:35:38 [INFO] Dequeued first element
+2026-09-11 04:35:38 [INFO] Dequeued second element
+2026-09-11 04:35:38 [INFO] Enqueue 50 result=success
+2026-09-11 04:35:38 [INFO] Enqueue 60 result=success
+2026-09-11 04:35:38 [INFO] Enqueue 70 result=success
+2026-09-11 04:35:38 [INFO] Final queue state
+2026-09-11 04:35:38 [INFO] Circular Queue: 30 -> 40 -> 50 -> 60 -> 70

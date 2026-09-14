@@ -1,0 +1,28 @@
+2026-09-14 07:01:04 [INFO] Linked-list stack program started
+2026-09-14 07:01:04 [INFO] Initial stack state
+2026-09-14 07:01:04 [INFO] Stack (bottom -> top): empty
+2026-09-14 07:01:04 [INFO] Pushed node with data=100
+2026-09-14 07:01:04 [INFO] Pushed node with data=101
+2026-09-14 07:01:04 [INFO] Pushed node with data=102
+2026-09-14 07:01:04 [INFO] Pushed node with data=103
+2026-09-14 07:01:04 [INFO] Pushed node with data=104
+2026-09-14 07:01:04 [INFO] Pushed node with data=105
+2026-09-14 07:01:04 [INFO] Pushed node with data=106
+2026-09-14 07:01:04 [INFO] Pushed node with data=107
+2026-09-14 07:01:04 [INFO] Pushed node with data=108
+2026-09-14 07:01:04 [INFO] Pushed node with data=109
+2026-09-14 07:01:04 [INFO] Pushed node with data=110
+2026-09-14 07:01:04 [INFO] After pushing 11 values
+2026-09-14 07:01:04 [INFO] Stack (bottom -> top): 100 -> 101 -> 102 -> 103 -> 104 -> 105 -> 106 -> 107 -> 108 -> 109 -> 110 <- top
+2026-09-14 07:01:04 [INFO] Top value=110
+2026-09-14 07:01:04 [INFO] Search 105 result=found
+2026-09-14 07:01:04 [INFO] Search 999 result=not found
+2026-09-14 07:01:04 [INFO] Popped node with data=110
+2026-09-14 07:01:04 [INFO] Popped node with data=109
+2026-09-14 07:01:04 [INFO] Popped node with data=108
+2026-09-14 07:01:04 [INFO] After popping 3 values
+2026-09-14 07:01:04 [INFO] Stack (bottom -> top): 100 -> 101 -> 102 -> 103 -> 104 -> 105 -> 106 -> 107 <- top
+2026-09-14 07:01:04 [INFO] After draining the stack
+2026-09-14 07:01:04 [INFO] Stack (bottom -> top): empty
+2026-09-14 07:01:04 [INFO] Peek on empty stack result=failed
+2026-09-14 07:01:04 [INFO] Linked-list stack program completed successfully

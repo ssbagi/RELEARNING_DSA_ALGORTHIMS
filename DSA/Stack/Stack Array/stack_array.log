@@ -1,0 +1,28 @@
+2026-09-14 07:01:13 [INFO] Array stack program started
+2026-09-14 07:01:13 [INFO] Initial stack state
+2026-09-14 07:01:13 [INFO] Array Stack (bottom -> top): empty
+2026-09-14 07:01:13 [INFO] Pushed data=100 result=ok
+2026-09-14 07:01:13 [INFO] Pushed data=101 result=ok
+2026-09-14 07:01:13 [INFO] Pushed data=102 result=ok
+2026-09-14 07:01:13 [INFO] Pushed data=103 result=ok
+2026-09-14 07:01:13 [INFO] Pushed data=104 result=ok
+2026-09-14 07:01:13 [INFO] Pushed data=105 result=ok
+2026-09-14 07:01:13 [INFO] Pushed data=106 result=ok
+2026-09-14 07:01:13 [INFO] Pushed data=107 result=ok
+2026-09-14 07:01:13 [INFO] After filling the stack
+2026-09-14 07:01:13 [INFO] Array Stack (bottom -> top): 100 -> 101 -> 102 -> 103 -> 104 -> 105 -> 106 -> 107 <- top [size=8, capacity=8]
+2026-09-14 07:01:13 [INFO] Push on full stack result=rejected
+2026-09-14 07:01:13 [INFO] Top value=107
+2026-09-14 07:01:13 [INFO] Search 105 result=found
+2026-09-14 07:01:13 [INFO] Search 999 result=not found
+2026-09-14 07:01:13 [INFO] Popped data=107
+2026-09-14 07:01:13 [INFO] Popped data=106
+2026-09-14 07:01:13 [INFO] Popped data=105
+2026-09-14 07:01:13 [INFO] After popping 3 values
+2026-09-14 07:01:13 [INFO] Array Stack (bottom -> top): 100 -> 101 -> 102 -> 103 -> 104 <- top [size=5, capacity=8]
+2026-09-14 07:01:13 [INFO] After pushing 200 into a reused slot
+2026-09-14 07:01:13 [INFO] Array Stack (bottom -> top): 100 -> 101 -> 102 -> 103 -> 104 -> 200 <- top [size=6, capacity=8]
+2026-09-14 07:01:13 [INFO] After draining the stack
+2026-09-14 07:01:13 [INFO] Array Stack (bottom -> top): empty
+2026-09-14 07:01:13 [INFO] Pop on empty stack result=rejected
+2026-09-14 07:01:13 [INFO] Array stack program completed successfully
