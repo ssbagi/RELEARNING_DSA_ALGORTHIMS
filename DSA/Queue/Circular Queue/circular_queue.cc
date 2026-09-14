@@ -9,136 +9,88 @@ namespace {
 
     constexpr const char* LOG_FILE = "circular_queue.log";
 
-    std::string queue_to_string(Node* head, int capacity) {
+    std::string queue_to_string(Node* head) {
         std::ostringstream output;
         output << "Circular Queue: ";
 
-        if (head == nullptr || capacity <= 0) {
+        if (head == nullptr) {
             output << "nullptr";
             return output.str();
         }
 
         Node* current = head;
-        int size = 0;
 
-        while (current != nullptr && size < capacity) {
-            output << current->data;
-
+        // One full loop: stop once the walk returns to the starting node.
+        do {
+            output << current->data << " -> ";
             current = current->tail;
-            ++size;
+        } while (current != head);
 
-            if (current != nullptr && size < capacity) {
-                output << " -> ";
-            }
-        }
-
-        if (current == nullptr) {
-            output << " -> nullptr";
-        } else {
-            output << " -> ...";
-        }
-
+        output << "(back to " << head->data << ")";
         return output.str();
     }
 
 }  // namespace
 
-// Insert a node at the end of the list starting at node.
-// Time: O(n), because the list may be traversed to find the last node.
+// Insert a node just before the start node, i.e. at the logical end of the circle.
+// Time: O(1), because the previous node is reachable through the start node's head link.
 // Auxiliary space: O(1), excluding the newly allocated node.
-Node* insert_node(Node* node, int data, int capacity) {
+Node* insert_node(Node* node, int data) {
     /*
-    Basic Circular Queue COncept only with short change :
-        - The queue has a fixed capacity.
-        - New nodes are only added if the current size is less than the capacity.
-        - The size of the queue is tracked to enforce the capacity constraint.
-        - The Tail will overflow to the initial node when the capacity is reached.
-        - Increment tail pointer on insertion/addition of the entry in the circular queue.
-        - Decrement head pointer on deletion/removal of the entry in the circular queue.
+    Basic Circular Queue concept without a capacity limit :
+        - The queue grows on demand, one node per insertion.
+        - The list stays closed at all times, so no link is ever nullptr.
+        - A single node is its own previous and next node.
+        - With two or more nodes the last node's tail points to the first node
+          and the first node's head points to the last node.
     */
-    
-    // Basic Sanity Checks
-    if (capacity <= 0) {
-        return node;  // Cannot insert into a queue with non-positive capacity.
-    }
 
-    // If list is empty then create the first entry.
-    int size = 0;   // Initialize the size of the circular queue.
+    Node* new_entry = new Node();
+    new_entry->data = data;
+
+    // First node closes the circle on itself.
     if (node == nullptr) {
-        Node* new_entry = new Node();
-        ++size;                         // Increment the size of the circular queue.
-        new_entry->head = nullptr;
-        new_entry->tail = nullptr;
-        new_entry->data = data;
+        new_entry->head = new_entry;
+        new_entry->tail = new_entry;
         return new_entry;
     }
 
-    Node* new_entry = node;
-    // Calculate the current size of the circular queue.
-    while (new_entry != nullptr && size < capacity) {
-        ++size;
-        new_entry = new_entry->tail;
-    }
+    Node* last = node->head;   // Current last node, reachable in O(1).
 
-    // Reinitialize new_entry to the head.
-    new_entry = node;
-    Node* inserted_node = nullptr;
-
-    // Worst-case traversal visits every existing node: O(n).
-    while (new_entry->tail != nullptr && size < capacity) {
-        new_entry = new_entry->tail;
-    }
-
-    // Link the new node after the current last node.
-    if (size < capacity) {
-        new_entry->tail = new Node();
-        new_entry->tail->head = new_entry;
-        new_entry->tail->data = data;
-        inserted_node = new_entry->tail;
-        ++size;
-    }
-
-    // Link the final node back to the initial node when the queue reaches capacity.
-    if (inserted_node != nullptr && size == capacity) {
-        inserted_node->tail = node; // Reinitialize the tail to point back to the head, completing the circular link.
-        node->head = inserted_node;
-        std::cout << "Queue has reached its capacity." << std::endl;
-    }
+    new_entry->head = last;
+    new_entry->tail = node;
+    last->tail = new_entry;
+    node->head = new_entry;   // Circle stays closed after the insertion.
 
     return node;
 }
 
-// Delete the first node with the requested data and return the updated head.
-// Time: O(n), because at most capacity nodes are scanned.
+// Delete the first node with the requested data and return the updated start node.
+// Time: O(n), because one full loop may be scanned.
 // Auxiliary space: O(1).
-Node* delete_node(Node* node, int data, int capacity) {
-    // Return unchanged when the list is empty or capacity is invalid.
-    if (node == nullptr || capacity <= 0) {
+Node* delete_node(Node* node, int data) {
+    // Return unchanged when the list is empty.
+    if (node == nullptr) {
         return node;
     }
 
     Node* current = node;
-    int size = 0;
 
-    // Move forward until the matching node is found, bounded for circular lists.
-    while (current != nullptr && size < capacity && current->data != data) {
+    // Walk at most one full loop looking for the value.
+    do {
+        if (current->data == data) {
+            break;
+        }
         current = current->tail;
-        ++size;
-    }
+    } while (current != node);
 
-    // Return unchanged when the value does not exist within the queue capacity.
-    if (current == nullptr || size == capacity) {
+    // Return unchanged when the value does not exist in the queue.
+    if (current->data != data) {
         return node;
     }
 
-    // Delete the only node in a non-circular list.
-    if (current->head == nullptr && current->tail == nullptr) {
-        delete current;
-        return nullptr;
-    }
-
-    // Delete the only node in a circular list.
-    if (current->head == current && current->tail == current) {
+    // Delete the only node in the circle.
+    if (current->tail == current) {
         delete current;
         return nullptr;
     }
@@ -148,48 +100,36 @@ Node* delete_node(Node* node, int data, int capacity) {
         node = current->tail;
     }
 
-    // Relink the previous node when one exists.
-    if (current->head != nullptr) {
-        current->head->tail = current->tail;
-    }
-
-    // Relink the next node when one exists.
-    if (current->tail != nullptr) {
-        current->tail->head = current->head;
-    }
+    // Relink the neighbours so the circle stays closed. With two nodes both
+    // links collapse onto the single surviving node, pointing it at itself.
+    current->head->tail = current->tail;
+    current->tail->head = current->head;
 
     delete current;
     return node;
 }
 
-
-
-// Search a node in the doubly linked list using forward traversal.
+// Search a node in the circular doubly linked list using forward traversal.
 // Time: O(n) worst case, including the not-found case.
 // Auxiliary space: O(1)
-bool search_node(Node* node, int data, int capacity) {
-
+bool search_node(Node* node, int data) {
     // A nullptr starting node means the list is empty.
-    int size = 0;   // Initialize the size of the circular queue.
-    if (node == nullptr || capacity <= 0) {
+    if (node == nullptr) {
         return false;
     }
+
     /*
-        Problem : 
-            Let's say I called search_node with some in between node lets say 3rd/4th node is passed to the function call.
-            So, there will be no nullptr at all since it is a circular buffer. 
-            Since made size = 0, the loop will terminate after visiting 'capacity' number of nodes at most.
-            Since, the list is circular, we need to limit the number of nodes we visit to the capacity to avoid an infinite loop.
+        The list is circular, so there is no nullptr terminator even when the
+        search starts from a node in the middle. Returning to the starting node
+        marks one full loop and ends the search.
     */
-    // The loop visits each node at most once: O(n).
     Node* current = node;
-    while (current != nullptr && size < capacity) {
+    do {
         if (current->data == data) {
             return true;
         }
         current = current->tail;
-        ++size;   // Increment the size of the circular queue.
-    }
+    } while (current != node);
 
     // Element not found
     return false;
@@ -198,8 +138,42 @@ bool search_node(Node* node, int data, int capacity) {
 // Traverse forward and print each node value.
 // Time: O(n), because every node is visited once.
 // Auxiliary space: O(1), excluding output-stream storage.
-void traverse_list(Node* head, int capacity) {
-    std::cout << queue_to_string(head, capacity) << std::endl;
+void traverse_list(Node* head) {
+    std::cout << queue_to_string(head) << std::endl;
+}
+
+// Count the nodes in one full loop.
+// Time: O(n). Auxiliary space: O(1).
+int queue_size(Node* node) {
+    if (node == nullptr) {
+        return 0;
+    }
+
+    int size = 0;
+    Node* current = node;
+    do {
+        ++size;
+        current = current->tail;
+    } while (current != node);
+
+    return size;
+}
+
+// Release every node in the circle.
+// Time: O(n). Auxiliary space: O(1).
+void clear_list(Node* node) {
+    if (node == nullptr) {
+        return;
+    }
+
+    // Break the circle first so the walk reaches a nullptr terminator.
+    node->head->tail = nullptr;
+
+    while (node != nullptr) {
+        Node* next = node->tail;
+        delete node;
+        node = next;
+    }
 }
 
 
@@ -213,70 +187,77 @@ int main() {
     logger.info("Circular queue program started");
 
     Node* head = nullptr;
-    int size = 0;   // Initialize the size of the circular queue.
-    int capacity = 11;   // Set the capacity of the circular queue.
 
-    traverse_list(head, size);
+    traverse_list(head);
     logger.info("Initial queue state");
-    logger.info(queue_to_string(head, size));
+    logger.info(queue_to_string(head));
 
-    // Build the list from an empty starting pointer.
+    // Build the list from an empty starting pointer; the queue grows on demand.
     for (int data = 100; data <= 110; ++data) {
-        head = insert_node(head, data, capacity);
-        ++size;   // Increment the size of the circular queue.
+        head = insert_node(head, data);
         logger.info("Inserted node with data=", data);
     }
 
     std::cout << "After inserting 11 nodes:" << std::endl;
-    traverse_list(head, size);
+    traverse_list(head);
+    std::cout << "Size: " << queue_size(head) << std::endl;
     logger.info("After inserting 11 nodes");
-    logger.info(queue_to_string(head, size));
+    logger.info(queue_to_string(head));
 
-    const bool found_105 = search_node(head, 105, size);
-    const bool found_999 = search_node(head, 999, size);
+    const bool found_105 = search_node(head, 105);
+    const bool found_999 = search_node(head, 999);
     std::cout << "Search 105: " << (found_105 ? "found" : "not found") << std::endl;
     std::cout << "Search 999: " << (found_999 ? "found" : "not found") << std::endl;
     logger.info("Search 105 result=", found_105 ? "found" : "not found");
     logger.info("Search 999 result=", found_999 ? "found" : "not found");
 
-    head = delete_node(head, 100, size);
-    --size;   // Decrement the size of the circular queue.
+    head = delete_node(head, 100);
     std::cout << "After deleting head node 100:" << std::endl;
-    traverse_list(head, size);
+    traverse_list(head);
     logger.info("After deleting head node 100");
-    logger.info(queue_to_string(head, size));
+    logger.info(queue_to_string(head));
 
-    head = delete_node(head, 105, size);
-    --size;   // Decrement the size of the circular queue.
+    head = delete_node(head, 105);
     std::cout << "After deleting middle node 105:" << std::endl;
-    traverse_list(head, size);
+    traverse_list(head);
     logger.info("After deleting middle node 105");
-    logger.info(queue_to_string(head, size));
+    logger.info(queue_to_string(head));
 
-    head = delete_node(head, 110, size);
-    --size;   // Decrement the size of the circular queue.  
+    head = delete_node(head, 110);
     std::cout << "After deleting tail node 110:" << std::endl;
-    traverse_list(head, size);
+    traverse_list(head);
     logger.info("After deleting tail node 110");
-    logger.info(queue_to_string(head, size));
+    logger.info(queue_to_string(head));
 
-    head = delete_node(head, 999, size);
+    head = delete_node(head, 999);
     std::cout << "After trying to delete missing node 999:" << std::endl;
-    traverse_list(head, size);
+    traverse_list(head);
+    std::cout << "Size: " << queue_size(head) << std::endl;
     logger.info("After trying to delete missing node 999");
-    logger.info(queue_to_string(head, size));
+    logger.info(queue_to_string(head));
     logger.info("Deleted test nodes with data=100, 105, and 110");
 
-    while (head != nullptr && size > 0) {
-        Node* next = head->tail;
-        delete head;
-        head = next;
-        --size;
+    // Shrink down to two nodes, then one, to show the circle staying closed.
+    // 105 is already gone, so the range runs to 107 to leave exactly 108 and 109.
+    for (int data = 101; data <= 107; ++data) {
+        head = delete_node(head, data);
     }
-    traverse_list(head, size);
-    logger.info("After cleanup");
-    logger.info(queue_to_string(head, size));
+    std::cout << "Down to two nodes:" << std::endl;
+    traverse_list(head);
+    logger.info("Down to two nodes");
+    logger.info(queue_to_string(head));
+
+    head = delete_node(head, 108);
+    std::cout << "Down to a single self-linked node:" << std::endl;
+    traverse_list(head);
+    logger.info("Down to a single self-linked node");
+    logger.info(queue_to_string(head));
+
+    clear_list(head);
     head = nullptr;
+    traverse_list(head);
+    logger.info("After cleanup");
+    logger.info(queue_to_string(head));
 
     logger.info("Circular queue program completed successfully");
 
